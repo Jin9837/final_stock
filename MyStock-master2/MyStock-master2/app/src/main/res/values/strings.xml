@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name" translatable="false">Mystock</string>
+    <string name="main_page" translatable="false">Homepage</string>
+    <string name="main_my" translatable="false">Account</string>
+    <string name="login" translatable="false">Log in</string>
+    <string name="search" translatable="false">Search</string>
+    <string name="register" translatable="false">Regist</string>
+    <string name="forget_pwd" translatable="false">Forget password</string>
+    <string name="exchange" translatable="false">trade</string>
+    <string name="my_info" translatable="false">Personal Information</string>
+    <string name="photo_select" translatable="false">select photo</string>
+    <string name="photo_search" translatable="false">search for picture</string>
+
+    // Localized
+    <string name="action_settings" translatable="false">settings</string>
+    <string name="action_delete" translatable="false">delete</string>
+    <string name="action_create">get stock data</string>
+    <string name="action_search">search</string>
+    <string name="action_done">OK</string>
+    <string name="action_change">switch</string>
+    <string name="action_refresh">refresh</string>
+    <string name="action_min_k">分时</string>
+    <string name="action_daily_k">日K</string>
+    <string name="action_monthly_k">月K</string>
+    <string name="action_weekly_k">周K</string>
+    <string name="button_add_label">add</string>
+    <string name="stock_name_title">name</string>
+    <string name="stock_now_title">newest</string>
+    <string name="stock_increase_percent_title">increase</string>
+    <string name="stock_increase_title">decrease</string>
+    <string name="stock_sh_name">上证指数</string>
+    <string name="stock_sz_name">深圳成指</string>
+    <string name="stock_chuang_name">创业板指</string>
+    <string name="stock_hk_name">恒生指数</string>
+    <string name="stock_dqs_name">道琼斯指数</string>
+    <string name="stock_nsdk_name">纳斯达克</string>
+    <string name="stock_dqsoy_name">道琼斯欧元指数</string>
+    <string name="stock_fs100_name">富时100指数</string>
+    <string name="stock_rj225_name">日经225指数</string>
+    <string name="stock_sh50_name">上证50指数</string>
+    <string name="stock_sh300_name">沪深300指数</string>
+    <string name="stock_zx_name">中证500</string>
+    <string name="stock_buy">buy</string>
+    <string name="stock_sell">sell</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
