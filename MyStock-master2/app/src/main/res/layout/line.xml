@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <EditText
+        android:id="@+id/et_stock1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/txt_border_red_selector"
+        android:focusable="false"
+        android:gravity="center"
+        android:hint="股票1"
+        android:padding="8dp"
+        android:textColor="@color/main_text_color"
+        android:textColorHint="@color/main_bg_grey" />
+
+    <EditText
+        android:id="@+id/et_stock2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/txt_border_red_selector"
+        android:focusable="false"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:hint="股票2"
+        android:padding="8dp"
+        android:textColor="@color/main_text_color"
+        android:textColorHint="@color/main_bg_grey" />
+
+    <EditText
+        android:id="@+id/et_stock3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/txt_border_red_selector"
+        android:focusable="false"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:hint="股票3"
+        android:padding="8dp"
+        android:textColor="@color/main_text_color"
+        android:textColorHint="@color/main_bg_grey" />
+
+    <EditText
+        android:id="@+id/et_stock4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/txt_border_red_selector"
+        android:focusable="false"
+        android:gravity="center"
+        android:layout_marginTop="150dp"
+        android:hint="股票4"
+        android:padding="8dp"
+        android:textColor="@color/main_text_color"
+        android:textColorHint="@color/main_bg_grey" />
+
+    <EditText
+        android:id="@+id/et_stock5"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/txt_border_red_selector"
+        android:focusable="false"
+        android:gravity="center"
+        android:layout_marginTop="200dp"
+        android:hint="股票5"
+        android:padding="8dp"
+        android:textColor="@color/main_text_color"
+        android:textColorHint="@color/main_bg_grey" />
+
+    <TextView
+        android:id="@+id/btn_line"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_below="@id/et_stock5"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shape_btn_red_selector"
+        android:gravity="center"
+        android:text="排队"
+        android:textColor="@color/main_text_color"
+        android:textSize="16sp" />
+</RelativeLayout>

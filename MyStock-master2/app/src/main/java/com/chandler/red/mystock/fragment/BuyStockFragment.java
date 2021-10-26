@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.chandler.red.mystock.R;
+import com.chandler.red.mystock.StockImgActivity;
 import com.chandler.red.mystock.activity.BuySearchActivity;
+import com.chandler.red.mystock.activity.ExchangeActivity;
+import com.chandler.red.mystock.activity.LineActivity;
 import com.chandler.red.mystock.adapter.BuyStockListAdapter;
 import com.chandler.red.mystock.adapter.HoldsAdapter;
 import com.chandler.red.mystock.db.StockBuisnessManager;
@@ -53,6 +57,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,6 +106,8 @@ public class BuyStockFragment extends LazyLoadFragment {
     LinearLayout buyLayout;
     @BindView(R.id.btn_buy)
     TextView btnBuy;
+    @BindView(R.id.btn_line)
+    TextView btnLine;
     @BindView(R.id.buy_stock_list_view)
     ListView buyStockListView;
     Unbinder unbinder;
@@ -399,7 +406,7 @@ public class BuyStockFragment extends LazyLoadFragment {
         initView();
     }
 
-    @OnClick({R.id.et_stock, R.id.value_minus, R.id.et_value, R.id.value_plus, R.id.min_value, R.id.max_value, R.id.count_minus, R.id.et_count, R.id.count_plus, R.id.all_buy, R.id.half_buy, R.id.one_third_buy, R.id.one_fourth_buy, R.id.btn_buy, R.id.btn_book})
+    @OnClick({R.id.et_stock, R.id.value_minus, R.id.et_value, R.id.value_plus, R.id.min_value, R.id.max_value, R.id.count_minus, R.id.et_count, R.id.count_plus, R.id.all_buy, R.id.half_buy, R.id.one_third_buy, R.id.one_fourth_buy, R.id.btn_buy, R.id.btn_book, R.id.btn_line})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.et_stock:
@@ -465,8 +472,22 @@ public class BuyStockFragment extends LazyLoadFragment {
             case R.id.btn_book: //监控功能
                 buyStocks2();
                 break;
+            case R.id.btn_line:
+                Intent intent = new Intent(getActivity(), LineActivity.class);
+//                intent.putExtra("page",0);
+//                intent.putExtra("number",number);
+//                intent.putExtra("name",name);
+                startActivity(intent);
+                break;
+//            case R.id.btn_line: //排队功能
+//                line();
+//                break;
         }
     }
+
+//    private void line() {
+//        Intent intent = new Intent(this, LineActivity.class);
+//    }
 
     private void buyStocks() {
         if (!DateUtil.isExchangeTime(System.currentTimeMillis())) {
@@ -585,7 +606,7 @@ public class BuyStockFragment extends LazyLoadFragment {
                 public void run() {
                     System.out.println("exeStock.getExeValue() is " + exeStock.getExeValue());
                     System.out.println("current val is " + curValue);
-                    if(exeStock.getExeValue() >=  1.099 * curValue) {
+                    if(exeStock.getExeValue() >=  1.099 * curValue && maxiValue == 0) {
                         System.out.println("message sent");
                         mhandler.sendEmptyMessage(0);
 

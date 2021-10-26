@@ -78,6 +78,7 @@
             android:label="@string/photo_search"
             android:theme="@style/AppTheme.ActivityTheme" />
         <activity android:name="com.chandler.red.mystock.activity.FullScreenActivity"></activity>
+        <activity android:name="com.chandler.red.mystock.activity.LineActivity"></activity>
     </application>
 
 </manifest>

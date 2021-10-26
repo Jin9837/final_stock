@@ -434,6 +434,8 @@ public class SellStockFragment extends LazyLoadFragment {
                 break;
             case R.id.btn_book:
                 sellStocks2();
+                break;
+
         }
     }
 

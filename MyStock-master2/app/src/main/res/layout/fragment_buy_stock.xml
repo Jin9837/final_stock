@@ -21,17 +21,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2">
+
             <EditText
                 android:id="@+id/et_stock"
                 android:layout_width="match_parent"
                 android:layout_height="41dp"
                 android:background="@drawable/txt_border_red_selector"
-                android:textColorHint="@color/main_bg_grey"
-                android:gravity="center"
                 android:focusable="false"
-                android:textColor="@color/main_text_color"
+                android:gravity="center"
+                android:hint="股票"
                 android:padding="8dp"
-                android:hint="股票" />
+                android:textColor="@color/main_text_color"
+                android:textColorHint="@color/main_bg_grey" />
+
             <LinearLayout
                 android:id="@+id/value_layout"
                 android:layout_width="match_parent"
@@ -194,30 +196,49 @@
                     android:text="1/4仓"
                     android:background="@drawable/txt_border_grey_selector"/>
             </LinearLayout>
-                <TextView
-                    android:id="@+id/btn_buy"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_below="@id/buy_layout"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="40dp"
-                    android:background="@drawable/shape_btn_red_selector"
-                    android:gravity="center"
-                    android:text="买入"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp" />
-                <TextView
-                    android:id="@+id/btn_book"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_below="@id/buy_layout"
-                    android:layout_toRightOf="@id/btn_buy"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_btn_red_selector"
-                    android:gravity="center"
-                    android:text="开启监控模式"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btn_buy"
+                android:layout_width="60dp"
+                android:layout_height="38dp"
+                android:layout_below="@id/buy_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_btn_red_selector"
+                android:gravity="center"
+                android:text="买入"
+                android:textColor="@color/main_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btn_book"
+                android:layout_width="60dp"
+                android:layout_height="38dp"
+                android:layout_below="@id/buy_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@id/btn_buy"
+                android:background="@drawable/shape_btn_red_selector"
+                android:gravity="center"
+                android:text="监控"
+                android:textColor="@color/main_text_color"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/btn_line"
+                android:layout_width="60dp"
+                android:layout_height="38dp"
+                android:layout_below="@id/buy_layout"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/btn_book"
+                android:background="@drawable/shape_btn_red_selector"
+                android:gravity="center"
+                android:text="排队"
+                android:textColor="@color/main_text_color"
+                android:textSize="16sp" />
+
+
         </RelativeLayout>
         <ListView
             android:layout_marginLeft="5dp"
