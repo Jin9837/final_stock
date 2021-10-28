@@ -472,22 +472,18 @@ public class BuyStockFragment extends LazyLoadFragment {
             case R.id.btn_book: //监控功能
                 buyStocks2();
                 break;
-            case R.id.btn_line:
+            case R.id.btn_line://排队功能
                 Intent intent = new Intent(getActivity(), LineActivity.class);
 //                intent.putExtra("page",0);
 //                intent.putExtra("number",number);
 //                intent.putExtra("name",name);
                 startActivity(intent);
                 break;
-//            case R.id.btn_line: //排队功能
-//                line();
-//                break;
+
         }
     }
 
-//    private void line() {
-//        Intent intent = new Intent(this, LineActivity.class);
-//    }
+
 
     private void buyStocks() {
         if (!DateUtil.isExchangeTime(System.currentTimeMillis())) {
@@ -590,14 +586,9 @@ public class BuyStockFragment extends LazyLoadFragment {
 
                 }
             };
-
             /*Message msg = Message.obtain();
             msg.what = 1;
             msg.obj = "AA";*/
-
-
-
-
 
             //curValue = 0;
             Timer t1 = new Timer();
@@ -624,39 +615,6 @@ public class BuyStockFragment extends LazyLoadFragment {
                 e.printStackTrace();
             }
             t1.cancel();
-
-
-
-
-
-
-
-
-
-
-            /*Timer t1 = new Timer();
-            TimerTask tt = new TimerTask(){
-                @Override
-                public void run() {
-//                    if (DateUtil.isExchangeTime(System.currentTimeMillis())) {
-                    if(exeStock.getExeValue() <=  0.9 * curValue) {
-//                        cValue[0] = cValue[0] - exeStock.getExeMount() * exeStock.getExeValue();
-//                        cStockValue[0] = cStockValue[0] + exeStock.getExeMount() * exeStock.getExeValue();
-//                        accStock.setCurStockValue(cStockValue[0]);
-//                        accStock.setCurValue(cValue[0]);
-//                        StockBuisnessManager.getInstance(getActivity()).replaceAccount(accStock);
-//                        Toast.makeText(getActivity(), "购买成功", Toast.LENGTH_SHORT).show();
-                        StockBuisnessManager.getInstance(getActivity()).replaceAccount(accStock);
-                        System.out.print("end run !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-                        t1.cancel();
-                    }
-//                    }
-                };
-            };
-
-            t1.schedule( tt, 10, 10);
-
-             */
         }
         return;
     }
