@@ -119,7 +119,7 @@ public class BuyStockFragment extends LazyLoadFragment {
     private String[] buyNameArr = {"卖五", "卖四", "卖三", "卖二", "卖一", "买一", "买二", "买三", "买四", "买五"};
 
     private BuyStockListAdapter buyStockListAdapter;
-    private List<StockBuy> stockBuyList;
+    public static List<StockBuy> stockBuyList;
     private RequestQueue queue;
     private String number;
     private String name;
