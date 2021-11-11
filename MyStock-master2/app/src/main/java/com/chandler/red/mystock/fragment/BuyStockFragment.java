@@ -597,7 +597,7 @@ public class BuyStockFragment extends LazyLoadFragment {
                 public void run() {
                     System.out.println("exeStock.getExeValue() is " + exeStock.getExeValue());
                     System.out.println("current val is " + curValue);
-                    if(exeStock.getExeValue() >=  1.099 * curValue && maxiValue == 0) {
+                    if(stockBuyList.get(5).getCount() == "0") {
                         System.out.println("message sent");
                         mhandler.sendEmptyMessage(0);
 

@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.chandler.red.mystock.MainActivity;
 import com.chandler.red.mystock.R;
 import com.chandler.red.mystock.adapter.BuyStockListAdapter;
 import com.chandler.red.mystock.entity.StockBuy;
@@ -62,6 +63,9 @@ public class LineActivity extends AppCompatActivity {
     private String[] stockArray;
     private String[] buyNameArr = {"卖五", "卖四", "卖三", "卖二", "卖一", "买一", "买二", "买三", "买四", "买五"};
     private BuyStockListAdapter buyStockListAdapter;
+    public String[] numbers;
+    public int count = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,10 @@ public class LineActivity extends AppCompatActivity {
 
     private void line() {
         Toast.makeText(LineActivity.this, "已开始排队", Toast.LENGTH_SHORT).show();
+        MainActivity ma = new MainActivity();
+        ma.querySinaStocks("000007");
+
+
 //        stockBuyList = new ArrayList<>();
 //        for (int i = 0; i < 4; i++)
 //        {
@@ -140,7 +148,6 @@ public class LineActivity extends AppCompatActivity {
     }
 
 
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtil.i("requestcode:" + requestCode + " resultcode:" + resultCode);
@@ -149,7 +156,14 @@ public class LineActivity extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK){ {
             name = data.getStringExtra("name");
             number = data.getStringExtra("number");
+
+//            // 把5个股票的number都存到numbers数组中
+//            numbers[count] = number;
+//            count++;
+
             Toast.makeText(this,String.valueOf(flag),Toast.LENGTH_SHORT).show();
+            
+            
             refreshViewAfterItemClicked();
         }
 //            queryByNumber();
@@ -180,53 +194,62 @@ public class LineActivity extends AppCompatActivity {
                 EditText editText4 = (EditText) findViewById(R.id.et_stock5);
                 editText4.setText(name, TextView.BufferType.EDITABLE);
                 break;
-//            case 6:
-//                TextView line = (TextView) findViewById(R.id.btn_line1);
-//                line.setText();
-
         }
     }
 
 
-//    private void queryByNumber(){
-//        etStock1.setText(name);
+//    private void queryByNumber(String num){
 //        if (number != null && !number.equals("")) {
 //            isInit = true;
 //            querySinaStocks();
 //        }
+//
+//
+//        for (int i = 0; i < 5; i++)
+//        {
+//            if (numbers[i] != null && !numbers[i].equals("")) {
+//                isInit = true;
+//                querySinaStocks();
+//            }
+//        }
+//
+//
 //    }
 //
 //
 //
 //    public void querySinaStocks() {
-//        // Volley作为网络请求
-//        if (number == null || number.equals("")) return;
-//        if (queue == null)
-//            queue = Volley.newRequestQueue(this);
-//        //新浪股票API，url类似：http://hq.sinajs.cn/list=sh600000,sh600536
-//        String url = "http://hq.sinajs.cn/list=" + number;
+//        for (int i = 0; i < 5; i++)
+//        {
+//            // Volley作为网络请求
+//            if (number == null || number.equals("")) return;
+//            if (queue == null)
+//                queue = Volley.newRequestQueue(this);
+//            //新浪股票API，url类似：http://hq.sinajs.cn/list=sh600000,sh600536
+//            String url = "http://hq.sinajs.cn/list=" + number;
 //
-//        //实例化一个 StringRequest作为网络请求
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        //解析请求的数据
-//                        responseToStocks(response);
-//                        if (stockArray != null && stockArray.length >= 30)
-//                            //刷新UI
-//                            refreshView();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        LogUtil.e("请求数据失败");
-//                    }
-//                });
+//            //实例化一个 StringRequest作为网络请求
+//            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                    new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            //解析请求的数据
+//                            responseToStocks(response);
+//                            if (stockArray != null && stockArray.length >= 30)
+//                                //刷新UI
+//                                refreshView();
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            LogUtil.e("请求数据失败");
+//                        }
+//                    });
 //
-//        queue.add(stringRequest);
-//        queue.start();
+//            queue.add(stringRequest);
+//            queue.start();
+//        }
 //    }
 //
 //    private void refreshView() {
