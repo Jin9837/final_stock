@@ -1,11 +1,12 @@
 package com.chandler.red.mystock.fragment;
 
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -25,9 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.chandler.red.mystock.R;
-import com.chandler.red.mystock.StockImgActivity;
 import com.chandler.red.mystock.activity.BuySearchActivity;
-import com.chandler.red.mystock.activity.ExchangeActivity;
 import com.chandler.red.mystock.activity.LineActivity;
 import com.chandler.red.mystock.adapter.BuyStockListAdapter;
 import com.chandler.red.mystock.adapter.HoldsAdapter;
@@ -55,8 +54,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -123,7 +120,7 @@ public class BuyStockFragment extends LazyLoadFragment {
     private RequestQueue queue;
     private String number;
     private String name;
-    private String[] stockArray;
+    private String[] stockArray;//股票信息 20到29是买一、卖一到买五、卖五到情况
     private double miniValue;
     private double maxiValue;
     private int curCount;
@@ -149,13 +146,14 @@ public class BuyStockFragment extends LazyLoadFragment {
         accId = accStock.getAccId();
         freeMoney = accStock.getCurValue();
         stockBuyList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {//买一，卖一 到 买五 卖五
             stockBuyList.add(new StockBuy(buyNameArr[i], "--", "--", 0));
         }
+        //买一、卖一到买五、卖五使用RecycleView实现
         buyStockListAdapter = new BuyStockListAdapter(getActivity(), stockBuyList);
         buyStockListView.setAdapter(buyStockListAdapter);
-        holdsBeanList = new ArrayList<>();
-        holdsAdapter = new HoldsAdapter(getActivity(),holdsBeanList);
+        holdsBeanList = new ArrayList<>();//从这里开始加载自选股票
+        holdsAdapter = new HoldsAdapter(getActivity(), holdsBeanList);
         buyList.setAdapter(holdsAdapter);
         initHoldsStocks();
         timer = new Timer("RefreshStocks");
@@ -345,7 +343,7 @@ public class BuyStockFragment extends LazyLoadFragment {
         double increase = curValue - yesValue;
         String cstr = "";
         for (int i = 0; i < 5; i++) {
-            int count = Integer.parseInt(stockArray[28 - i * 2]) / 100;
+            int count = Integer.parseInt(stockArray[28 - i * 2]) / 100;//一手等于100股
             if (count >= 10000) {
                 cstr = String.format("%.2f", count / 10000.0) + "万";
             } else {
@@ -597,7 +595,7 @@ public class BuyStockFragment extends LazyLoadFragment {
                 public void run() {
                     System.out.println("exeStock.getExeValue() is " + exeStock.getExeValue());
                     System.out.println("current val is " + curValue);
-                    if(stockBuyList.get(5).getCount() == "0") {
+                    if (judgeCondition()) {
                         System.out.println("message sent");
                         mhandler.sendEmptyMessage(0);
 
@@ -605,18 +603,28 @@ public class BuyStockFragment extends LazyLoadFragment {
                 }
             }, 10 , 100);
 
-            try
-            {
+            try {
                 Thread.sleep(100);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
                 e.printStackTrace();
             }
             t1.cancel();
         }
         return;
+    }
+
+    private boolean judgeCondition() {
+        //昨日跌6%，今日涨停
+        if (stockBuyList.get(5).getCount() == "0") {
+            return true;
+        }
+        //今日涨幅低于2%，开盘价不高于过去20天的均价
+        Double todayRate = Double.parseDouble(todayValue.getText().toString()); //今日涨跌幅
+        if (todayRate < 2) {
+            return true;
+        }
+        return false;
     }
 
 

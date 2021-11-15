@@ -77,21 +77,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView() {
         tvDate = findViewById(R.id.tv_date);
-        recyclerView = findViewById(R.id.recycle_view);
-        stockList = new ArrayList<>();
+        recyclerView = findViewById(R.id.recycle_view);//recycleView用来展示自选股
+        stockList = new ArrayList<>();//上面recycleView需要用到的list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MainStockListAdapter(this, stockList);
         recyclerView.setAdapter(adapter);
         // Add the sticky headers decoration
         final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(adapter);
+        //这个StickyRecyclerHeadersDecoration用来做粘性头部，上拉页面后自选股的标题会黏在顶部
         recyclerView.addItemDecoration(headersDecor);
         adapter.setOnItemClickLitener(new MainStockListAdapter.OnItemClickLitener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, int position) {//股票id以_隔开
                 String id = stockList.get(position).getId_();
-                String url = StockImgApi.IMG_F + id.split("_")[1] + ".gif";
+                String url = StockImgApi.IMG_F + id.split("_")[1] + ".gif";//股票的曲线图
                 Intent intent = new Intent(MainActivity.this, StockImgActivity.class);
-                intent.putExtra("type",2);
+                intent.putExtra("type", 2);
                 intent.putExtra("url", url);
                 intent.putExtra("id", id);
                 startActivity(intent);
@@ -341,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void run() {
                                 MyDbManager.getInstance(MainActivity.this).replace(responseToStocks(response));
+                                Log.d("XJW", response.toString());
 //                                handler.removeCallbacksAndMessages(null);
                                 handler.sendEmptyMessage(1);
                                 Log.i(MySqlHelper.TAG,"success curNumber:"+curNumber+" szNumber:"+szNumber+" chuangNumber:"+chuangNumber+" from:"+from);

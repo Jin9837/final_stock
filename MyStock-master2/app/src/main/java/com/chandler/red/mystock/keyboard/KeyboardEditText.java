@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
 
 /**
  * 带自定义键盘的edittext
- * Created by  on 2018/2/9.
  */
 
 public class KeyboardEditText extends EditTextWidthDeleteIcon {

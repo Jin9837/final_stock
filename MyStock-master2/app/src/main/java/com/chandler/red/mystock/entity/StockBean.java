@@ -2,7 +2,9 @@ package com.chandler.red.mystock.entity;
 
 import com.chandler.red.mystock.util.HanyuUtil;
 
-public class StockBean {
+import java.io.Serializable;
+
+public class StockBean implements Serializable {
     private String number;
     private String character;
     private String name;
@@ -10,7 +12,7 @@ public class StockBean {
     private boolean isSelected;
     private long topTime;
 
-    public StockBean(){
+    public StockBean() {
 
     }
 

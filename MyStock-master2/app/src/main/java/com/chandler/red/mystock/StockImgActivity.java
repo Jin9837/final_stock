@@ -32,13 +32,16 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StockImgActivity extends BaseActivity implements View.OnClickListener{
+/****
+ * 这个类用来展示股票的详细信息
+ */
+public class StockImgActivity extends BaseActivity implements View.OnClickListener {//BaseActivity的作用只是引入滑动
 
     private ImageView image;
-    private TextView textTitle;
-    private TextView textExchange;
-    private TextView textSelect;
-    private TextView type;
+    private TextView textTitle;//这里展示的是时间
+    private TextView textExchange;//交易按钮
+    private TextView textSelect;//自选按钮，如果已经加入自选就是取消自选
+    private TextView type;//图的种类，默认是分时图。可以在右上角三点处点击切换
     private String idurl;
     private String url;
     private int fromType;
@@ -84,14 +87,14 @@ public class StockImgActivity extends BaseActivity implements View.OnClickListen
         idurl = StockImgApi.INDEX_F+id;
         url = getIntent().getStringExtra("url");
         fromType = getIntent().getIntExtra("type",0);
-        if(fromType==1){
+        if (fromType == 1) {//1是大盘
             textSelect.setVisibility(View.GONE);
             textExchange.setVisibility(View.GONE);
-        }else {
+        } else {//2是自选
             textSelect.setVisibility(View.VISIBLE);
             textExchange.setVisibility(View.VISIBLE);
         }
-        timer = new Timer("RefreshStocks");
+        timer = new Timer("RefreshStocks"); //定时器
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -107,7 +110,7 @@ public class StockImgActivity extends BaseActivity implements View.OnClickListen
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageShowActivity.startImageActivity(StockImgActivity.this,image,url);
+                ImageShowActivity.startImageActivity(StockImgActivity.this, image, url);//大图浏览
             }
         });
         textSelect.setOnClickListener(this);
@@ -117,7 +120,7 @@ public class StockImgActivity extends BaseActivity implements View.OnClickListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_stock_image, menu);
+        getMenuInflater().inflate(R.menu.menu_stock_image, menu);//右上角三点的自选框
         return true;
     }
 
@@ -172,10 +175,10 @@ public class StockImgActivity extends BaseActivity implements View.OnClickListen
                 + "  "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND);
         runOnUiThread(new Runnable() {
             @Override
-            public void run() {
+            public void run() {//开启子线程来实现对走势图的刷新
                 textTitle.setText(now);
                 image.setScaleType(ImageView.ScaleType.FIT_XY);
-                RequestOptions options = new RequestOptions()
+                RequestOptions options = new RequestOptions() //Glide的图片缓存框架
                         .dontAnimate()
                         .placeholder(R.mipmap.pictures_no)
                         .error(R.mipmap.pictures_no)

@@ -8,7 +8,7 @@ import android.widget.Toolbar;
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
 public abstract class BaseActivity extends AppCompatActivity implements BGASwipeBackHelper.Delegate {
-    protected BGASwipeBackHelper mSwipeBackHelper;
+    protected BGASwipeBackHelper mSwipeBackHelper; //支持滑动退出
     protected Toolbar mToolbar;
 
     @Override

@@ -23,6 +23,7 @@ import com.chandler.red.mystock.db.MyDbManager;
 import com.chandler.red.mystock.db.MySqlHelper;
 import com.chandler.red.mystock.db.StockBuisnessManager;
 import com.chandler.red.mystock.entity.SearchHistoryBean;
+import com.chandler.red.mystock.entity.Stock;
 import com.chandler.red.mystock.entity.StockBean;
 import com.github.jdsjlzx.ItemDecoration.LuDividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -102,13 +103,15 @@ public class BuySearchActivity extends BaseActivity {
         recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String idtext = stockBeanList.get(position).getNumber();
-                String name = stockBeanList.get(position).getName();
+                StockBean stock = stockBeanList.get(position);
+                String idtext = stock.getNumber();
+                String name = stock.getName();
                 idtext = idtext.substring(2);
                 Intent intent = new Intent();
-                intent.putExtra("number",idtext);
-                intent.putExtra("name",name);
-                setResult(RESULT_OK,intent);
+                intent.putExtra("number", idtext);
+                intent.putExtra("name", name);
+                intent.putExtra("stock", stock);
+                setResult(RESULT_OK, intent);
                 finish();
             }
 
