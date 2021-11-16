@@ -16,5 +16,6 @@ public class StockImgApi {
     public static final String FS100 = "http://image.sinajs.cn/newchart/min/fs100.gif";
     public static final String RJ225 = "http://image.sinajs.cn/newchart/min/rj225.gif";
     public static final String INDEX_F = "http://hq.sinajs.cn/list=";
+    public static final String STOCK_H = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=";
     public static final String IMG_F = "http://image.sinajs.cn/newchart/min/";
 }

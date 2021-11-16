@@ -241,7 +241,7 @@ public class LineActivity extends AppCompatActivity {
             stockPrice = Double.parseDouble(stockArray[3]);
             stockBuyOneNum = Integer.parseInt(stockArray[10]) / 100;
             Log.d("XJW", "responseToBuyOne: " + stockBuyOneNum);
-            if (stockBuyOneNum < 2100) {//买一数量小于2000时，买入股票
+            if (stockBuyOneNum < 2000) {//买一数量小于2000时，买入股票
                 Log.d("XJW", "responseToBuyOne价格符合预期: ");
                 if (DateUtil.isExchangeTime(System.currentTimeMillis())) {//只有在交易时间才可购买股票
                     //这里要初始化一个execStock,因为交易需要交易号等一系列东西

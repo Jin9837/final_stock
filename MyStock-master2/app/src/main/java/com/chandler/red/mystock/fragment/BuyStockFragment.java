@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.chandler.red.mystock.R;
+import com.chandler.red.mystock.StockImgApi;
 import com.chandler.red.mystock.activity.BuySearchActivity;
 import com.chandler.red.mystock.activity.LineActivity;
 import com.chandler.red.mystock.adapter.BuyStockListAdapter;
@@ -33,6 +34,8 @@ import com.chandler.red.mystock.adapter.HoldsAdapter;
 import com.chandler.red.mystock.db.StockBuisnessManager;
 import com.chandler.red.mystock.entity.AccStock;
 import com.chandler.red.mystock.entity.ExeStock;
+import com.chandler.red.mystock.entity.HistoryModel;
+import com.chandler.red.mystock.entity.HistoryModels;
 import com.chandler.red.mystock.entity.HoldsBean;
 import com.chandler.red.mystock.entity.Stock;
 import com.chandler.red.mystock.entity.StockBuy;
@@ -40,10 +43,12 @@ import com.chandler.red.mystock.presenter.StockPresenter;
 import com.chandler.red.mystock.util.Constants;
 import com.chandler.red.mystock.util.DateUtil;
 import com.chandler.red.mystock.util.EncryptUtil;
+import com.chandler.red.mystock.util.GsonUtil;
 import com.chandler.red.mystock.util.LogUtil;
 import com.chandler.red.mystock.util.NumberUtil;
 import com.chandler.red.mystock.util.TextUtils;
 import com.chandler.red.mystock.view.HttpResponseView;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +130,8 @@ public class BuyStockFragment extends LazyLoadFragment {
     private double maxiValue;
     private int curCount;
     private int maxCount;
-    private double freeMoney;
+    private double freeMoney;//开盘价
+    private double openPrice;
 
     private String phone;
     private int accId;
@@ -135,6 +141,7 @@ public class BuyStockFragment extends LazyLoadFragment {
 
     private StockPresenter<ArrayList<Stock>> stockPresenter;
     private HttpResponseView<ArrayList<Stock>> httpResponseView;
+    HistoryModels model;
 
     private void initView() {
         showProgressDialog();
@@ -270,13 +277,52 @@ public class BuyStockFragment extends LazyLoadFragment {
         queue.start();
     }
 
+    private void analyzeHistoricalData() {
+        if (number == null || number.equals("")) return;
+        if (queue == null)
+            queue = Volley.newRequestQueue(getActivity());
+        String url1 = StockImgApi.STOCK_H + number + "&scale=60&ma=no&datalen=80";
+        //scale表示按小时获取历史数据，因为一天有4个小时的开盘时间。所以要获取20天的历史数据，就要返回80条数据
+        //为了获取当天的收盘价，我们需要拿到三点时的数据
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        List<HistoryModel> historyList = GsonUtil.Convert(response, new TypeToken<List<HistoryModel>>() {
+                        }.getType());
+                        List<HistoryModel> historyList2 = new ArrayList<>();
+                        if (historyList != null) {
+                            for (int j = 0; j < historyList.size(); j++) {
+                                if (historyList.get(j).day.split(" ")[1].equals("15:00:00")) {
+                                    historyList2.add(historyList.get(j));
+                                }
+                            }
+                        }
+                        model = new HistoryModels(name, number, historyList2.get(historyList2.size() - 1).day, historyList2);
+//                        Message msg = new Message();
+//                        msg.what = 5;
+//                        handler.sendMessage(msg);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        queue.add(stringRequest1);
+    }
+
     private StringBuilder numberList;
-    private void refreshHoldsStocks(){
+
+    private void refreshHoldsStocks() {
         holdsBeanList = StockBuisnessManager.getInstance(getActivity()).getExeHoldStocks();
-        if(holdsBeanList!=null && holdsBeanList.size()>0){
+        if (holdsBeanList != null && holdsBeanList.size() > 0) {
             holdsAdapter.setData(holdsBeanList);
             numberList = new StringBuilder();
-            for(HoldsBean holdsBean:holdsBeanList){
+            for (HoldsBean holdsBean : holdsBeanList) {
                 numberList.append("s_");
                 numberList.append(holdsBean.getNumber());
                 numberList.append(",");
@@ -334,7 +380,8 @@ public class BuyStockFragment extends LazyLoadFragment {
             maxValue.setText("涨停" + String.format("%.2f", maxiValue));
             double dayProfit = (curValue-yesValue)/yesValue * 100;
             todayValue.setText("当日"+String.format("%.2f",dayProfit)+"%");
-            setTextColor(todayValue,dayProfit);
+            setTextColor(todayValue, dayProfit);
+            openPrice = Double.parseDouble(stockArray[1]);
         }
         int dcount = (int) (freeMoney / curValue / 100);
         maxCount = dcount<0?0:dcount * 100;
@@ -615,13 +662,24 @@ public class BuyStockFragment extends LazyLoadFragment {
     }
 
     private boolean judgeCondition() {
+        List<HistoryModel> list = model.list; //先拿到列表
+        Double priceOfYesterday = Double.parseDouble(list.get(list.size() - 2).close);//前天的收盘价
+        Double priceOfTheDay = Double.parseDouble(list.get(list.size() - 3).close);//昨天的收盘价
+        Double declineRate = (priceOfYesterday / priceOfTheDay - 1) * 100;//计算昨日跌幅
+        Double averagePrice = 0.;//20天的均价
+        for (HistoryModel m : list) {
+            averagePrice += Double.parseDouble(m.close);
+        }
+        averagePrice /= 20;
         //昨日跌6%，今日涨停
-        if (stockBuyList.get(5).getCount() == "0") {
+        if (stockBuyList.get(5).getCount() == "0" && declineRate < -6) {
             return true;
         }
         //今日涨幅低于2%，开盘价不高于过去20天的均价
-        Double todayRate = Double.parseDouble(todayValue.getText().toString()); //今日涨跌幅
-        if (todayRate < 2) {
+        String value = todayValue.getText().toString();
+        value = value.substring(2, value.length() - 1);
+        Double todayRate = Double.parseDouble(value); //今日涨跌幅
+        if (todayRate < 2 && openPrice <= averagePrice) {
             return true;
         }
         return false;
@@ -658,7 +716,7 @@ public class BuyStockFragment extends LazyLoadFragment {
                 if (resultCode == RESULT_OK) {
                     number = data.getStringExtra("number");
                     name = data.getStringExtra("name");
-                    refreshViewAfteriItemClicked();
+                    refreshViewAfteriItemClicked();//从搜索页面回来以后，先把页面置为初始值
                     queryByNumber();
                 }
                 break;
@@ -671,6 +729,10 @@ public class BuyStockFragment extends LazyLoadFragment {
         if (number != null && !number.equals("")) {
             isInit = true;
             querySinaStocks();
+            //解析历史数据放在这里
+            analyzeHistoricalData();
         }
     }
+
+
 }
